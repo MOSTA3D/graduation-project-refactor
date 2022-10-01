@@ -1,7 +1,7 @@
 package com.graduation.api;
 
-import com.graduation.api.entities.RoleEntity;
-import com.graduation.api.entities.UserEntity;
+import com.graduation.api.entities.*;
+import com.graduation.api.repositories.AreaRepo;
 import com.graduation.api.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +21,9 @@ public class ApiApplication {
 	private UserRepo userRepo;
 
 	@Autowired
+	private AreaRepo areaRepo;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
@@ -31,7 +34,8 @@ public class ApiApplication {
 	@Transactional
 	private void makeQuery(UserRepo userRepository){
 		List<RoleEntity> roles = new ArrayList<>();
-		roles.add(new RoleEntity("ROLE_ADMIN"));
+		roles.add(new RoleEntity(EnumRole.ROLE_ADMIN));
+		roles.add(new RoleEntity(EnumRole.ROLE_USER));
 
 		UserEntity user = new UserEntity("mostafa", "mostafa@gmail.com", passwordEncoder.encode("password"));
 		user.setRoles(roles);
@@ -41,8 +45,10 @@ public class ApiApplication {
 
 	@Bean
 	CommandLineRunner run(UserRepo userRepository){
+//		CameraEntity camera = new CameraEntity("some url");
 		return args->{
 			makeQuery(userRepository);
+			areaRepo.save(new AreaEntity("the area", "image", "somewhere", null));
 		};
 	}
 

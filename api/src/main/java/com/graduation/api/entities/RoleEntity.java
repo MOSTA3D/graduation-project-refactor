@@ -3,10 +3,7 @@ package com.graduation.api.entities;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -15,9 +12,11 @@ public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
 
-    public RoleEntity(String name) {
+    @Enumerated(EnumType.STRING)
+    private EnumRole name;
+
+    public RoleEntity(EnumRole name) {
         this.name = name;
     }
 }
