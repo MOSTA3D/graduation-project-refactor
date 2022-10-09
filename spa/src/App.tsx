@@ -12,20 +12,16 @@ import NotFound from './pages/notfound/NotFound';
 import Home from './pages/home/Home';
 import Welcome from './components/welcome/Welcome';
 import { AuthState, getDataFromCookies } from "./slices/authSlice";
+import { getAllAreas } from './slices/areaSlice';
+import { useAppSelector } from './app/hooks';
 
 function App() {
-  const loading = false;
 
   const [ isLogin, setIsLogin ] = useState(false);
 
   const dispatch = useDispatch();
 
-  const authData = useSelector((state:{auth: AuthState})=>state.auth);
-
-  console.log(authData);
-
-  const isAuthed = authData.token !== "";
-
+  const {auth} = useAppSelector((state)=>state);
 
   useEffect(()=>{
     dispatch(getDataFromCookies());
@@ -33,33 +29,31 @@ function App() {
 
   return (
     <div className="App">
-        {/* <Nav {...{authed, setAuthed}} /> */}
-        
-        <Home>
-          {
-            isAuthed ? (
-              <Welcome/>
-            ):(
-              <Signup { ...{isLogin, setIsLogin } }/>
-            )
-          }
-        </Home>
+        <Nav isAuthed = {auth.isAuthed} />
         {
-          loading ? (
+          auth.isLoading ? (
             <Loading/>
           ):(
-            isAuthed && (
-              <>
-                {/* <Notifications/> */}
-                <Routes>
-                  <Route path="/" element={<Welcome />} />
-                  <Route path="/grid" element={<Camgrid />} />
-                  <Route path="/grid/:id" element={<Camera />} />
-                  {/* <Route path="/test" element={<Test />} /> */}
-                  <Route path="/*" element={<NotFound />} />
-                </Routes>
-              </>
-            )
+            <>
+              <Home>
+                {
+                  auth.isAuthed ? (
+                    <Welcome/>
+                  ):(
+                    <Signup { ...{isLogin, setIsLogin } }/>
+                  )
+                }
+              </Home>
+              {
+                auth.isAuthed && (
+                  <Routes>
+                    <Route path="/grid" element={<Camgrid />} />
+                    <Route path="/grid/:id" element={<Camera />} />
+                    <Route path="/*" element={<NotFound />} />
+                  </Routes>
+                )
+              }
+            </>
           )
         }
         <Footer />

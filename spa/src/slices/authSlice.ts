@@ -6,21 +6,23 @@ import { postData } from "../utils/helper/helper";
 const name = "auth";
 
 export interface AuthState{
-    email:string;
-    token:string;
-    roles:string[];
-}
-
-interface AuthKeys{
-    email:string;
-    token:string;
-    roles:string;
+    isAuthed: boolean,
+    user: {
+        email: string,
+        token: string,
+        roles: string[],    
+    },
+    isLoading: boolean;
 }
 
 const initialState:AuthState = {
-    email: "",
-    token: "",
-    roles: []
+    isAuthed: false,
+    user: {
+        email: "",
+        token: "",
+        roles: [],
+    },
+    isLoading: true
 }
 
 export interface Credintials{
@@ -38,7 +40,6 @@ export interface CredintialsWrapperWithLoginStatus{
 export const getAuthData = createAsyncThunk(
     "auth/getAuthData",
     (payload:CredintialsWrapperWithLoginStatus)=>{
-        console.log(payload);
         return postData(`${SERVER_URL}/auth/${payload.isLogin ? "login" : "signup"}`, payload.credintials);
     }
 );
@@ -47,37 +48,41 @@ const authSlice = createSlice({
     name,
     initialState,
     reducers: {
-        getDataFromCookies: (state:any)=>{
+        getDataFromCookies: (state:AuthState)=>{
             const cookieHelper = CookieHelper.getCookieHelper();
-            // Object.keys(state).forEach((k:string)=>{
-            //     console.log(k);
-            //     (state[k] as any) = cookieHelper.getCookieValueByName(k) as any;
-            // })
-            state.email = cookieHelper.getCookieValueByName("email");
-            state.token = cookieHelper.getCookieValueByName("token");
+            const token = cookieHelper.getCookieValueByName("token");
+            state.isLoading = false;
+            
+            if(!token) return;
+
+            const email = cookieHelper.getCookieValueByName("email");
             const rolesCookie:string = cookieHelper.getCookieValueByName("roles");
-            state.roles = rolesCookie ? rolesCookie.split(",") : [];
+            state.user.roles = rolesCookie ? rolesCookie.split(",") : [];
+            state.user.token = token;
+            state.isAuthed = true;
         }
     },
     extraReducers(builder){
         builder.addCase(getAuthData.fulfilled, (state, action)=>{
+            state.isLoading = false;
             const cookieHelper = CookieHelper.getCookieHelper();
             const {payload} = action;
+            
             cookieHelper.setCookiesFromObject(payload);
-            console.log("doesn't get here");
-            state.email = payload.email;
-            state.token = payload.token;
-            state.roles = payload.roles;
+            state.user.email = payload.email;
+            state.user.token = payload.token;
+            state.user.roles = payload.roles;
+            state.isAuthed = true;
         });
 
         builder.addCase(getAuthData.pending, (state, action)=>{
             console.log("loading");
-            // state = action.payload;
+            state.isLoading = true;
         });
 
         builder.addCase(getAuthData.rejected, (state, action)=>{
             console.log("rejected");
-            // state = action.payload;
+            state.isLoading = false;
         });
     }
 })

@@ -1,11 +1,9 @@
-import image from "../../assets/logo_vector.svg";
-import { useRef, useState, useContext, ChangeEvent, useEffect, MouseEventHandler, MouseEvent } from "react";
-import { D_ERR_SHADOW, EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX, SERVER_URL } from "../../utils/config";
+import { useRef, useState, MouseEvent } from "react";
+import { EMAIL_REGEX, NAME_REGEX, PASSWORD_REGEX } from "../../utils/config";
 import Input from "../input/Input";
-import { postData } from "../../utils/helper/helper";
-import CookieHelper from "../../utils/helper/CookieHelper";
 import { useDispatch } from "react-redux";
 import { CredintialsWrapperWithLoginStatus, getAuthData } from "../../slices/authSlice";
+import { setLoading, unsetLoading } from "../../slices/loadingSlice";
 
 function Signup(props:any){
 
@@ -15,7 +13,7 @@ function Signup(props:any){
     const [ password, setPassword ] = useState("");
     const [ cpassword, setCpassword ] = useState("");
 
-    const { isLogin, setIsLogin, setLoading } = props;
+    const { isLogin, setIsLogin } = props;
 
     // refs
     const myRef = useRef<HTMLElement>(null as unknown as HTMLDivElement);
@@ -23,13 +21,6 @@ function Signup(props:any){
 
     // redux
     const dispatch = useDispatch();
-
-    const cookieHelper = CookieHelper.getCookieHelper();
-
-    useEffect(()=>{
-        console.log(email, password);
-    }, [email, password]);
-    
 
     const isReadyToSubmit = ()=>{
         return email && password && (isLogin || (firstname && lastname && cpassword))
@@ -57,7 +48,7 @@ function Signup(props:any){
     }
 
     return (
-        <form ref={formRef} className={"signup " + (isLogin?"signin":"")}>
+        <form className={"signup " + (isLogin?"signin":"")}>
             
             { !isLogin && (
                 <div className="name">

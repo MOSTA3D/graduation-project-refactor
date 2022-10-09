@@ -74,11 +74,11 @@ a{
 
 // system nav style
 
-// @import "sass/nav";
+@import "./components/nav/nav";
 
 // loaidng
 
-// @import "sass/loading";
+@import "./components/loading/loading";
 
 // welcome
 
@@ -98,7 +98,7 @@ a{
 
 /* footer style */
 
-// @import "sass/footer";
+@import "./components/footer/footer";
 
 
 

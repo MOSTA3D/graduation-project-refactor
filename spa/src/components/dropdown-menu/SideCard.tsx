@@ -3,27 +3,25 @@ import React from "react";
 interface ISideCardProps{
     name: string;
     image: string;
-    show: boolean;
+    showCard: boolean;
 }
 
 function SideCard(props:ISideCardProps){
-    const { name, image, show } = props;
+    const { name, image, showCard } = props;
     return(
         <>
-            {name&&(
-                <div className={"side-card" + (show ? " open" : "")}>
-                    {name?(
-                        <>
-                            <img src={image} alt={name} />
-                            <h2>{name}</h2>
-                        </>
-                    ):(
-                        <>
-                            <div> loading </div>
-                        </>
-                    )}
-                </div>
-            )}
+            <div className={"side-card" + (showCard ? " open" : "")}>
+                {name?(
+                    <>
+                        <img src={image} alt={name} />
+                        <h2>{name}</h2>
+                    </>
+                ):(
+                    <>
+                        <div> loading </div>
+                    </>
+                )}
+            </div>
         </>
     )
 }

@@ -1,0 +1,85 @@
+@keyframes loading{
+    0%{
+      transform: rotate(0);
+    }
+    100%{
+      transform: rotate(-360deg);
+    }
+  }
+  
+  @keyframes fade-color {
+    0%{
+      box-shadow: unset;
+    }
+    50%{
+      box-shadow: 0 0 20px 3px #f00;
+    }
+    100%{
+      box-shadow: unset;
+    }
+  }
+  
+  div.loading{
+    height: calc(100vh - 110px);
+    margin: 60px auto 50px auto;
+    @include flex-box(false, space-around);
+  
+    // nesting loading
+    .circle{
+      width: 100px;
+      height: 100px;
+      border: 10px solid $primary-hover-color;
+      border-radius: 50%;
+      transform: perspective(400px);
+      animation: loading infinite 2s linear, fade-color infinite 1.5s linear;
+  
+      // nesting circle
+  
+      .arc{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform: rotate(0deg);
+        transform-origin: center;
+  
+  
+        &:nth-of-type(2){
+          transform: rotate(60deg);
+        }
+  
+        &:nth-of-type(3){
+          transform: rotate(120deg);
+        }
+  
+        &:nth-of-type(4){
+          transform: rotate(180deg);
+        }
+  
+        &:nth-of-type(5){
+          transform: rotate(240deg);
+        }
+  
+        &:last-of-type{
+          transform: rotate(300deg);
+        }
+  
+        // nesting arc
+  
+        .q-circle{
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          border: 26px solid $primary-hover-color;
+          border-left-color: transparent;
+          border-top-color: transparent;
+          border-right-color: transparent;
+          position: absolute;
+          top: 22px;
+          left: 25px;
+          transform: rotateY(55deg) rotateX(-16deg);
+          animation: fade-color infinite 1.5s linear;
+        }
+      }
+    }
+  }
+  

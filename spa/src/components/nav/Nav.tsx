@@ -1,47 +1,50 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import Clock from "../clock/Clock";
+// import AreasMenu from "../dropdown-menu/DropDownMenu";
+import FlipIcon from "./FlipIcon";
+import SideMenu from "./SideMenu";
+import DropDownMenu from "../dropdown-menu/DropDownMenu";
+import areasLoader from "../dropdown-menu/areasLoader";
+import AreaListItem from "../dropdown-menu/AreaListItem";
+
+// const AreasMenu = resourceLoaderWithRedux(DropDownMenu, "Areas", getAllAreas);
+const AreasMenu = areasLoader(DropDownMenu);
 
 function Nav(props:any){
     const [ flipped, setFlipped ] = useState(false);
     const [ sideMenu, setSideMenu ] = useState(false);
-    const [ isShowAreas, setIsShowAreas ] = useState(false);
 
     const navigateTo = useNavigate();
 
     // destructing props
-    const { authed, setAuthed } = props;
+    const { isAuthed } = props;
 
     // console.log(history);
-
-    const showAreas = ()=>{
-        setIsShowAreas(!isShowAreas);
-        return;
-    }
 
     function onFlipIconClick(e:React.MouseEvent){
         setFlipped(!flipped);
         setSideMenu(!sideMenu);
-
-        return;
     }
 
     return(
         <nav className="s-nav">
-            {/* {authed && (
-                <FontAwesomeIcon className="icon-left-angle" icon={faAngleLeft} onClick={()=> navigateTo(-1)} />
+            {isAuthed && (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="angle-left">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
             )}
             <span className="nav-title">
                 City Security System
                 <Clock />
             </span>
-            {authed && (
+            {isAuthed && (
                 <>
-                    <AreasMenu {...{isShowAreas, showAreas}} />
+                    <AreasMenu ListItem = {AreaListItem} resourceName="area" className="areas" name="Areas" />
                     <FlipIcon {...{flipped, onFlipIconClick}} />
-                    <SideMenu {...{sideMenu, setAuthed, onFlipIconClick}} />
+                    <SideMenu {...{sideMenu, onFlipIconClick}} />
                 </>
-            )} */}
+            )}
         </nav>
     )
 }

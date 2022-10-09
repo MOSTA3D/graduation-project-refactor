@@ -17,6 +17,21 @@ export async function postData(url="", data={}, token = ""){
 
 }
 
+export async function getData(url="", token = ""){
+    let response:Response;
+    response = await fetch(url, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
+    const result = response.json();
+    if((response.status / 100) !== 2){
+        throw result;
+    }
+    return result;
+
+}
 
 
 
