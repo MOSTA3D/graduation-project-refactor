@@ -22,9 +22,9 @@ public class AreaController {
         return ResponseEntity.ok(areaService.getAllAreas());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AreaDto> getArea(@PathVariable Long id){
+    @GetMapping("/{areaName}")
+    public ResponseEntity<AreaDto> getArea(@PathVariable String areaName){
         System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        return ResponseEntity.ok(areaService.getArea(id));
+        return ResponseEntity.ok(areaService.getArea(areaName));
     }
 }

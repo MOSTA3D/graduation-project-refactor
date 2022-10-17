@@ -1,26 +1,18 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import Clock from "../clock/Clock";
-// import AreasMenu from "../dropdown-menu/DropDownMenu";
 import FlipIcon from "./FlipIcon";
 import SideMenu from "./SideMenu";
 import DropDownMenu from "../dropdown-menu/DropDownMenu";
 import areasLoader from "../dropdown-menu/areasLoader";
 import AreaListItem from "../dropdown-menu/AreaListItem";
 
-// const AreasMenu = resourceLoaderWithRedux(DropDownMenu, "Areas", getAllAreas);
 const AreasMenu = areasLoader(DropDownMenu);
 
 function Nav(props:any){
     const [ flipped, setFlipped ] = useState(false);
     const [ sideMenu, setSideMenu ] = useState(false);
 
-    const navigateTo = useNavigate();
-
-    // destructing props
     const { isAuthed } = props;
-
-    // console.log(history);
 
     function onFlipIconClick(e:React.MouseEvent){
         setFlipped(!flipped);

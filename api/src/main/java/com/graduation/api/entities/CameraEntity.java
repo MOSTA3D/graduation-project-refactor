@@ -16,8 +16,10 @@ public class CameraEntity {
     @ManyToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")
     private AreaEntity area;
+    private boolean hasCrime;
 
     public CameraEntity(String url){
         this.url = url;
+        this.hasCrime = false;
     }
 }

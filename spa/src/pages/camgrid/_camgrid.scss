@@ -1,0 +1,74 @@
+@keyframes alert-shadow {
+    0%{
+      box-shadow: none;
+    }
+    50%{
+      box-shadow: 0px 0px 20px 5px #f00;
+    }
+    0%{
+      box-shadow: none;
+    }
+  }
+  
+  main.cam-grid{
+    $camera-radius: 5px;
+    margin-top: $nav-height;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 10px;
+    
+      margin-bottom: 50px;
+  
+      >div{
+        // background-color: rgba(19, 41, 139, 0.342);
+        // min-height: 300px;
+        display: grid;
+        overflow: hidden;
+        border-radius: $camera-radius;
+  
+        &.has-crime{
+          animation: alert-shadow infinite 1.5s linear;
+  
+          span div.video-wrapper{
+            filter: hue-rotate(160deg);
+          }
+        }
+  
+        &.loading{
+          background-color: rgba(0, 0, 0, 0.212);
+        }
+      }
+      >div::before{
+        content:"";
+        padding-bottom: 56.25%;
+        display: block;
+      }
+      >div::before,
+      >div span{
+        grid-area: 1/1/2/2;
+      }
+      >div span{
+        position: relative;
+  
+        // nesting
+        video{
+          width: 100%;
+          height: 100%;
+        }
+        div.video-wrapper{
+          position: absolute;
+          top: 0;left:0;
+          width: 100%;
+          height: 100%;
+          background-image: url("../../assets/vid-wraper.png");
+          background-size: cover;
+          transition: $dtrans;
+          cursor: pointer;
+          &:hover{
+            opacity: 0;
+          }
+        }
+      }
+    }
+    

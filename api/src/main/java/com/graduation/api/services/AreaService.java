@@ -2,6 +2,7 @@ package com.graduation.api.services;
 
 import com.graduation.api.dtos.AreaDto;
 import com.graduation.api.dtos.AreaNoCameras;
+import com.graduation.api.dtos.CameraDto;
 import com.graduation.api.entities.AreaEntity;
 import com.graduation.api.exceptions.AppException;
 import com.graduation.api.repositories.AreaRepo;
@@ -17,17 +18,13 @@ public class AreaService {
     private AreaRepo areaRepo;
 
     public List<AreaNoCameras> getAllAreas(){
-
-        List<AreaNoCameras> areasReturned = areaRepo.findAll().stream().map((a)->{
-            return new AreaNoCameras(a.getId(), a.getName(), a.getImage(), a.getLocation());
-        }).collect(Collectors.toList());
-
+        List<AreaNoCameras> areasReturned = areaRepo.findAll().stream().map(AreaNoCameras::new).collect(Collectors.toList());
         return areasReturned;
     }
 
-    public AreaDto getArea(Long areaId){
-        AreaEntity area = areaRepo.findById(areaId).orElseThrow(()->new AppException("Something went wrong"));
-        AreaDto areaReturned = new AreaDto(area.getId(), area.getName(), area.getImage(), area.getLocation(), area.getCameras());
+    public AreaDto getArea(String areaName){
+        AreaEntity areaEntity = areaRepo.findByName(areaName).orElseThrow(()->new AppException("Something went wrong"));
+        AreaDto areaReturned = new AreaDto(areaEntity);
         return areaReturned;
     }
 

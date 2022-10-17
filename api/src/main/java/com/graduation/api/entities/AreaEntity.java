@@ -16,6 +16,7 @@ public class AreaEntity {
     private String name;
     private String image;
     private String location;
+    private boolean hasCrime;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "area")
     private List<CameraEntity> cameras;
 
@@ -24,5 +25,6 @@ public class AreaEntity {
         this.image = image;
         this.location = location;
         this.cameras = cameras;
+        this.hasCrime = false;
     }
 }

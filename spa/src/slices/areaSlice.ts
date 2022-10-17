@@ -4,14 +4,26 @@ import { getData } from "../utils/helper/helper";
 
 const name = "area"
 
-const initialState = {
+export interface Area{
+    id:number;
+    name:string;
+    image:string;
+    location:string;
+    hasCrime:boolean;
+}
+
+export interface AreaState{
+    areas:Area[]
+}
+
+const initialState:AreaState = {
     areas: []
 }
 
 export const getAllAreas = createAsyncThunk("area/getAllAreas", async (_e, {getState})=>{
     const state:any = getState();
     return getData(`${SERVER_URL}/api/area`, state.auth.user.token);
-})
+});
 
 const areaSlice = createSlice({
     name,
